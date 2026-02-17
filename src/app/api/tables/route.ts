@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Table number and label required' }, { status: 400 });
         }
 
-        const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://qr-based-menu.vercel.app';
         const tableUrl = `${appUrl}/table/${number}`;
 
         const qrCode = await QRCode.toDataURL(tableUrl, {

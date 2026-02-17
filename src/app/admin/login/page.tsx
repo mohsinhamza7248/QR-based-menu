@@ -86,7 +86,7 @@ export default function AdminLogin() {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     className="input pl-10"
-                                    placeholder="••••••••"
+                                    placeholder="admin123"
                                     required
                                 />
                             </div>

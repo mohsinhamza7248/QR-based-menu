@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, Trash2, Download, QrCode } from 'lucide-react';
+import { Plus, Trash2, Download, QrCode, RefreshCcw } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 interface Table {
@@ -56,6 +56,23 @@ export default function QRCodesPage() {
             await fetch(`/api/tables/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${getToken()}` } });
             toast.success('Deleted'); fetchTables();
         } catch { }
+    };
+
+    const handleRegenerate = async (id: string) => {
+        try {
+            const res = await fetch(`/api/tables/${id}/regenerate`, {
+                method: 'POST',
+                headers: { Authorization: `Bearer ${getToken()}` }
+            });
+            if (res.ok) {
+                toast.success('QR Code regenerated!');
+                fetchTables();
+            } else {
+                toast.error('Failed to regenerate');
+            }
+        } catch {
+            toast.error('Error regenerating QR');
+        }
     };
 
     const downloadQR = (table: Table) => {
@@ -114,6 +131,9 @@ export default function QRCodesPage() {
                             <div className="flex items-center gap-2 mt-4">
                                 <button onClick={() => downloadQR(table)} className="flex-1 btn-secondary flex items-center justify-center gap-1.5 text-sm py-2">
                                     <Download size={14} /> Download
+                                </button>
+                                <button onClick={() => handleRegenerate(table._id)} title="Regenerate QR" className="p-2.5 rounded-xl hover:bg-blue-500/10 text-blue-400 transition-colors">
+                                    <RefreshCcw size={16} />
                                 </button>
                                 <button onClick={() => handleDelete(table._id)} className="p-2.5 rounded-xl hover:bg-red-500/10 text-red-400 transition-colors">
                                     <Trash2 size={16} />
